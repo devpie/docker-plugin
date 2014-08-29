@@ -4,7 +4,7 @@ package com.nirima.jenkins.plugins.docker;
 import com.cloudbees.plugins.credentials.common.StandardUsernameCredentials;
 import com.google.common.base.Preconditions;
 import com.nirima.docker.client.model.ContainerInspectResponse;
-import com.nirima.jenkins.plugins.docker.utils.RetryingComputerLauncher;
+import com.nirima.jenkins.plugins.docker.utils.OffsetComputerLauncher;
 import hudson.Extension;
 import hudson.model.*;
 import hudson.plugins.sshslaves.SSHConnector;
@@ -39,7 +39,7 @@ public class DockerComputerLauncher extends DelegatingComputerLauncher {
 
     private static ComputerLauncher makeLauncher(DockerTemplate template, ContainerInspectResponse containerInspectResponse) {
         SSHLauncher sshLauncher = getSSHLauncher(containerInspectResponse, template);
-        return new RetryingComputerLauncher(sshLauncher);
+        return new OffsetComputerLauncher(sshLauncher, template.getLaunchSlaveOffset());
     }
 
     private static SSHLauncher getSSHLauncher(ContainerInspectResponse detail, DockerTemplate template)   {

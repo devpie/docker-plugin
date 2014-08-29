@@ -60,7 +60,12 @@ public class DockerTemplate implements Describable<DockerTemplate> {
      * Minutes before terminating an idle slave
      */
     public final String idleTerminationMinutes;
-
+    
+    /**
+     * Minutes before the ssh connection and the slave get launched
+     */
+    public final String slaveLaunchDelay;
+    
     /**
      * Field jvmOptions.
      */
@@ -105,6 +110,7 @@ public class DockerTemplate implements Describable<DockerTemplate> {
                           String remoteFs,
                           String remoteFsMapping,
                           String credentialsId, String idleTerminationMinutes,
+                          String slaveLaunchDelay,
                           String jvmOptions, String javaPath,
                           String prefixStartSlaveCmd, String suffixStartSlaveCmd,
                           String instanceCapStr, String dnsString,
@@ -119,6 +125,7 @@ public class DockerTemplate implements Describable<DockerTemplate> {
         this.labelString = Util.fixNull(labelString);
         this.credentialsId = credentialsId;
         this.idleTerminationMinutes = idleTerminationMinutes;
+        this.slaveLaunchDelay = slaveLaunchDelay;
         this.jvmOptions = jvmOptions;
         this.javaPath = javaPath;
         this.prefixStartSlaveCmd = prefixStartSlaveCmd;
@@ -177,6 +184,10 @@ public class DockerTemplate implements Describable<DockerTemplate> {
 
     public String getRemoteFsMapping() {
         return remoteFsMapping;
+    }
+    
+    public int getLaunchSlaveOffset() {
+    	return Integer.parseInt(slaveLaunchDelay);
     }
 
     public Descriptor<DockerTemplate> getDescriptor() {
